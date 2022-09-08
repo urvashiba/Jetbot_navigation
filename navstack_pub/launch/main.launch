@@ -1,0 +1,48 @@
+<launch> 
+  
+<!-- Arguments -->
+  <arg name="cmd_vel_topic" default="/jetbot_motors/cmd_vel/" />
+  <arg name="local_planner" default='teb' />
+  <arg name="lidar_enable" default="true" />
+  <arg name="visualize_laser" default="true" /> 
+
+  <include file="$(find navstack_pub)/launch/map_server.launch"/>
+  <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen"/>
+<!-- move_base -->
+  <include file="$(find navstack_pub)/launch/move_base.launch"/>  
+<!-- amcl -->
+  <include file="$(find navstack_pub)/launch/amcl.launch"/>
+
+
+
+ <!-- Publish: /initialpose, /move_base_simple/goal -->
+  <node pkg="rviz" type="rviz" name="rviz" />
+
+ <!-- Lidar Data Publisher Using RPLIDAR from Slamtec -->
+ <!-- Publish: /scan -->
+  <include file="$(find rplidar_ros)/launch/rplidar.launch"/> 
+
+  
+
+ </launch>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
