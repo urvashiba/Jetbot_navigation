@@ -1,0 +1,40 @@
+<launch> 
+   <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.0 0 0.0 0 0 0 base_link laser 100" />
+  
+<!-- Arguments -->
+  <!--arg name="cmd_vel_topic" default="/jetbot_motors/cmd_vel/" / -->
+  <arg name="visualize_laser" default="true" /> 
+
+<!-- map_server -->
+  <include file="$(find navstack_pub)/launch/map_server.launch"/>
+  <arg name="map" default="$(find navstack_pub)/maps/new_map.yaml"/>
+<!-- amcl -->
+  <include file="$(find navstack_pub)/launch/amcl.launch"/>
+
+<!-- laser scan matcher -->
+  <include file="$(find navstack_pub)/launch/scan_matcher.launch"/>
+
+
+<!-- move_base -->
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <rosparam file="$(find navstack_pub)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find navstack_pub)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find navstack_pub)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find navstack_pub)/param/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find navstack_pub)/param/teb_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find navstack_pub)/param/trajectory_planner.yaml" command="load" />
+    <rosparam file="$(find navstack_pub)/param/move_base_params.yaml" command="load" />
+    <remap from="cmd_vel" to="/cmd_vel" />
+    <remap from="odom" to="odom" />
+    <param name="TebLocalPlannerROS/min_vel_x" value="0.0" />
+    </node>
+
+ <!-- Publish: /initialpose, /move_base_simple/goal -->
+  <node pkg="rviz" type="rviz" name="rviz" />
+
+ <!-- Lidar Data Publisher Using RPLIDAR from Slamtec -->
+ <!-- Publish: /scan -->
+  <include file="$(find rplidar_ros)/launch/rplidar.launch"/> 
+
+ </launch>
