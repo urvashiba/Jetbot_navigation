@@ -5,7 +5,7 @@
   <description>The jetbot_ros package</description>
   
   <maintainer email="urvashibaparmar@icloud.com">Urvashiba parmar</maintainer>
-  <license>BSD</license>
+  <license>TODO</license>
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
